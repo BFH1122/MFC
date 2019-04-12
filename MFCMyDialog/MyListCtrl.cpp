@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "MFCMyDialog.h"
 #include "MyListCtrl.h"
+#include <stdio.h>
 
 
 // CMyListCtrl
@@ -19,6 +20,48 @@ CMyListCtrl::~CMyListCtrl()
 {
 }
 
+
+void CMyListCtrl::insertDatas(CMyListCtrl & mList, int **nums, int n, int len) {
+	
+	char ch3[10] ,tmp[10];
+	//插入随机数据　　
+	for (int j = 0; j < len; j++) {
+		_itoa_s(j + 1, ch3, 10);
+		mList.InsertItem(j, _T("")); // 插入
+		mList.SetItemText(j, 0, ch3);
+		for (int i = 0; i<n; i++) {
+			_itoa_s(nums[i][j], tmp, 10);
+			mList.SetItemText(j, i + 1, tmp);
+		}
+
+		mList.SetItemColor(j, RGB(0, 0, 0),
+			j % 2 == 0 ? RGB(255, 120, 120) : RGB(120, 120, 100));
+	}
+}
+
+void CMyListCtrl::setListHeader(CMyListCtrl & mlist) {
+
+	//控制list
+	DWORD dwOldStyle = mlist.GetExtendedStyle();//获取原风格,可以在添加有复选框样式的表格
+	mlist.SetExtendedStyle(dwOldStyle | LVS_EX_FULLROWSELECT
+		| LVS_EX_GRIDLINES);//若设置复选框样式，在此添加LVS_CHECK宏
+							//获取表格的宽度
+
+	mlist.ModifyStyle(WS_VSCROLL | WS_HSCROLL, 0);
+
+	CRect rc;
+	mlist.GetClientRect(rc);
+	int nWidth = rc.Width() - 20;
+	//为List插入列信息
+	mlist.InsertColumn(0, _T("编号"), 0, nWidth / 6);
+	mlist.InsertColumn(1, _T("第一组"), 0, nWidth / 6);
+	mlist.InsertColumn(2, _T("第二组"), 0, nWidth / 6);
+	mlist.InsertColumn(3, _T("第三组"), 0, nWidth / 6);
+	mlist.InsertColumn(4, _T("第四组"), 0, nWidth / 6);
+	mlist.InsertColumn(5, _T("第五组"), 0, nWidth / 6);
+
+}
+
 BEGIN_MESSAGE_MAP(CMyListCtrl, CListCtrl)
 	//{{AFX_MSG_MAP(CLineColorListCtrl)
 	// NOTE - the ClassWizard will add and remove mapping macros here.
@@ -29,6 +72,7 @@ END_MESSAGE_MAP()
 
 
 // CMyListCtrl 消息处理程序
+
 
 void CMyListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 {

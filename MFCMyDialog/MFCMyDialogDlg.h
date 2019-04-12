@@ -7,6 +7,9 @@
 #include "MyListCtrl.h"
 #include "afxwin.h"
 
+#include "Deatil_dialog.h"
+#include "MyDialog.h"
+
 
 // CMFCMyDialogDlg ¶Ô»°¿ò
 class CMFCMyDialogDlg : public CDialogEx
@@ -57,5 +60,8 @@ public:
 	CStatic static_TEXT;
 	afx_msg void OnNMClickList1(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnColumnClick(NMHDR *pNMHDR, LRESULT *pResult);
+	int **nums;
+	int len;
+	int n;
 
 };

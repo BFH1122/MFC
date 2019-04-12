@@ -1,28 +1,24 @@
 
 // MFCMyDialogDlg.cpp : 实现文件
 //
-
-
 #include "stdafx.h"
 #include "MFCMyDialog.h"
 #include "MFCMyDialogDlg.h"
 #include "afxdialogex.h"
 
 #include "random.h"
-#include "MyListCtrl.h"
 
-#include <Windows.h>
+#include "MyListCtrl.h"
 #include <string>
 #include <sstream>
 #include <stdio.h>
+#include "Helper.h"
 
 using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-
 
 class CAboutDlg : public CDialogEx
 {
@@ -66,6 +62,7 @@ CMFCMyDialogDlg::CMFCMyDialogDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(IDD_MFCMYDIALOG_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
 }
 
 void CMFCMyDialogDlg::DoDataExchange(CDataExchange* pDX)
@@ -126,49 +123,30 @@ BOOL CMFCMyDialogDlg::OnInitDialog()
 
 	// TODO: 在此添加额外的初始化代码
 
+	//--------------------自定义部分---------------------------------------
+
 	//添加自定义的菜单
 	m_Menu.LoadMenu(IDR_MENU1);
 	SetMenu(&m_Menu);
 
-	//控制list
-
-	DWORD dwOldStyle = mList.GetExtendedStyle();//获取原风格,可以在添加有复选框样式的表格
-	mList.SetExtendedStyle(dwOldStyle | LVS_EX_FULLROWSELECT
-		| LVS_EX_GRIDLINES);//若设置复选框样式，在此添加LVS_CHECK宏
-							//获取表格的宽度
-
-	mList.ModifyStyle(WS_VSCROLL | WS_HSCROLL,0);
-
-	CRect rc;
-	mList.GetClientRect(rc);
-	int nWidth = rc.Width()-20;
-	//为List插入列信息
-	mList.InsertColumn(0, _T("编号"), 0, nWidth / 6);
-	mList.InsertColumn(1, _T("第一组"), 0, nWidth / 6);
-	mList.InsertColumn(2, _T("第二组"), 0, nWidth / 6);
-	mList.InsertColumn(3, _T("第三组"), 0, nWidth / 6);
-	mList.InsertColumn(4, _T("第四组"), 0, nWidth / 6);
-	mList.InsertColumn(5, _T("第五组"), 0, nWidth / 6);
+	//添加表格头部
+	mList.setListHeader(mList);
+	
+	Helper::setCombox(combox);
 
 	//首先画出直角坐标系
-	//初始化的数据
+	//char *items[5];// = new char[6];
+	//items[0] = "1";
+	//items[1] = "2";
+	//items[2] = "3";
+	//items[3] = "4";
+	//items[4] = "5";
 
-	char *items[5];// = new char[6];
-	items[0] = "1";
-	items[1] = "2";
-	items[2] = "3";
-	items[3] = "4";
-	items[4] = "5";
+	//for (int i = 0; i < 5; i++) {
+	//	combox.AddString(items[i]);
+	//}
 
-	for (int i = 0; i < 5; i++) {
-		combox.AddString(items[i]);
-	}
-
-	combox.SetCurSel(0);
-
-
-
-
+	//combox.SetCurSel(0);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -214,31 +192,40 @@ void CMFCMyDialogDlg::OnPaint()
 		CDialogEx::OnPaint();
 	}
 
-
-
-	//画出直角坐标系
 	startx = 20;
 	starty = 20;
 	endx = 20;
 	endy = 180;
-	midLength = 600;
+	midLength = 650;
 
+
+	//画出自己的直角坐标系
 	CClientDC dc(GetDlgItem(IDC_MySTATIC));
+	Helper::drawCoordinate(dc,startx,starty,endx,endy,midLength);
 
-	//黑色画笔
-	CPen pen(PS_SOLID, 1.5, RGB(0, 0, 0));
-	CPen *oldPen = dc.SelectObject(&pen);
+	////画出直角坐标系
+	//startx = 20;
+	//starty = 20;
+	//endx = 20;
+	//endy = 180;
+	//midLength = 600;
 
-	dc.TextOutA(startx - 10, starty - 10, "10");
-	dc.TextOutA(startx - 10, endy, "-10");
-	dc.TextOutA(startx - 10, (starty + endy) / 2, "0");
+	//CClientDC dc(GetDlgItem(IDC_MySTATIC));
+
+	////黑色画笔
+	//CPen pen(PS_SOLID, 1.5, RGB(0, 0, 0));
+	//CPen *oldPen = dc.SelectObject(&pen);
+
+	//dc.TextOutA(startx - 10, starty - 10, "10");
+	//dc.TextOutA(startx - 10, endy, "-10");
+	//dc.TextOutA(startx - 10, (starty + endy) / 2, "0");
 
 
-	dc.MoveTo(startx, starty);
-	dc.LineTo(endx, endy);
-	dc.MoveTo(startx, (endy + starty) / 2);
-	dc.LineTo(midLength, (endy + starty) / 2);
-	dc.SelectObject(oldPen);
+	//dc.MoveTo(startx, starty);
+	//dc.LineTo(endx, endy);
+	//dc.MoveTo(startx, (endy + starty) / 2);
+	//dc.LineTo(midLength, (endy + starty) / 2);
+	//dc.SelectObject(oldPen);
 
 
 }
@@ -285,7 +272,7 @@ void CAboutDlg::OnHelps()
 void CMFCMyDialogDlg::OnHelps()
 {
 	// TODO: 在此添加命令处理程序代码
-	MessageBox("点击帮助按钮");
+	MessageBox("点击标题组数，查看单条曲线！");
 }
 
 
@@ -293,91 +280,93 @@ void CMFCMyDialogDlg::OnHelps()
 void CMFCMyDialogDlg::OnBnClickedButton1()
 {
 
+	if (nums != NULL) {
+		delete nums;
+		nums = NULL;
+	}
+
 	DWORD start_time = GetTickCount();
 	// TODO: 在此添加控件通知处理程序代码
-	char ch1[10], ch2[10], ch3[10],tmp[10];
-	int n, len;
+	char ch1[10], ch2[10];
 	mList.SetRedraw(FALSE);
-
 	//刷新列表（清空）
 	mList.DeleteAllItems();
 	int nIndex = combox.GetCurSel();
 	combox.GetLBText(nIndex, ch2);
-
 	GetDlgItem(IDC_EDIT1)->GetWindowText(ch1, 10);
-
 	n = atoi(ch2);
 	len = atoi(ch1);
-	
-	//根据需要产生随机数
 
-	NumArrays *arr = new NumArrays();
-	int **nums = (*arr).getArray(n, len);
+	if (n <= 0 || len <= 0) {
+		MessageBox("请输入对应的长度与组数");
+		return;
 
-
-	//插入随机数据　　
-	for (int j = 0; j < len; j++) {
-		_itoa_s(j + 1, ch3, 10);
-		mList.InsertItem(j, _T("")); // 插入
-		mList.SetItemText(j, 0, ch3);
-		for (int i = 0; i<n; i++) {
-			_itoa_s(nums[i][j], tmp, 10);
-			mList.SetItemText(j, i + 1, tmp);
-		}
-
-		mList.SetItemColor(j, RGB(0, 0, 0),
-			j % 2 == 0 ? RGB(255, 120, 120) : RGB(120, 120, 100));
 	}
+
+	//lens = len;
+	//根据需要产生随机数
+	NumArrays *arr = new NumArrays();
+	nums = (*arr).getArray(n, len);
+	//进行数据的插入
+	mList.insertDatas(mList, nums, n, len);
+	////插入随机数据　　
+	//for (int j = 0; j < len; j++) {
+	//	_itoa_s(j + 1, ch3, 10);
+	//	mList.InsertItem(j, _T("")); // 插入
+	//	mList.SetItemText(j, 0, ch3);
+	//	for (int i = 0; i<n; i++) {
+	//		_itoa_s(nums[i][j], tmp, 10);
+	//		mList.SetItemText(j, i + 1, tmp);
+	//	}
+
+	//	mList.SetItemColor(j, RGB(0, 0, 0),
+	//		j % 2 == 0 ? RGB(255, 120, 120) : RGB(120, 120, 100));
+	//}
+
 
 	mList.SetRedraw(TRUE);
 
-
 	//首先画出直角坐标系
 	CClientDC dc(this->GetDlgItem(IDC_MySTATIC));
-
 	//首先使得整个区域无效。然后进行窗口的重绘
 	InvalidateRect(NULL);
 	UpdateWindow();
 
 
-	//初始化画笔的颜色
-	CPen *pens[5] = {
-		new CPen(PS_SOLID, 1, RGB(120, 0, 0)),
-		new CPen(PS_SOLID, 1, RGB(10, 255, 0)),
-		new CPen(PS_SOLID, 1, RGB(23, 0, 255)),
-		new CPen(PS_SOLID, 1, RGB(125, 125, 125)),
-		new CPen(PS_SOLID, 1, RGB(255, 200, 210))
-	};// PS_SOLID, 1, RGB(255, 0, 0));
+	////初始化画笔的颜色
+	//CPen *pens[5] = {
+	//	new CPen(PS_SOLID, 1, RGB(120, 0, 0)),
+	//	new CPen(PS_SOLID, 1, RGB(10, 255, 0)),
+	//	new CPen(PS_SOLID, 1, RGB(23, 0, 255)),
+	//	new CPen(PS_SOLID, 1, RGB(125, 125, 125)),
+	//	new CPen(PS_SOLID, 1, RGB(255, 200, 210))
+	//};// PS_SOLID, 1, RGB(255, 0, 0));
 
 
+	Helper::drawLine(dc, nums, n, len, startx, starty, midLength, endy);
 
 	//坐标与像素的转化
 
 	//标识像素的坐标点
-	int x, y;
-	//对于每一组数据
-	for (int i = 0; i < n; i++) {
-		//访问其中的每一个数据点。
-		y = (starty + endy) / 2 - (nums[i][0] * (endy - starty) / 20);  //第一个点的坐标
-		x = midLength / len + startx; //横向的单位长度
-		CPen *oldPen = dc.SelectObject(pens[i]);
+	//int x, y;
+	////对于每一组数据
+	//for (int i = 0; i < n; i++) {
+	//	//访问其中的每一个数据点。
+	//	y = (starty + endy) / 2 - (nums[i][0] * (endy - starty) / 20);  //第一个点的坐标
+	//	x = midLength / len + startx; //横向的单位长度
+	//	CPen *oldPen = dc.SelectObject(pens[i]);
 
-		for (int j = 1; j < len; j++) {
-			dc.MoveTo(x, y);
-			y = 100 - (nums[i][j] * (endy - starty) / 20);
-			x = startx + midLength / len * (j+1);
-			dc.LineTo(x, y);
-		}
-		dc.SelectObject(oldPen);
-	}
+	//	for (int j = 1; j < len; j++) {
+	//		dc.MoveTo(x, y);
+	//		y = 100 - (nums[i][j] * (endy - starty) / 20);
+	//		x = startx + midLength / len * (j+1);
+	//		dc.LineTo(x, y);
+	//	}
+	//	dc.SelectObject(oldPen);
+	//}
 
 	DWORD end_time = GetTickCount();
-
-	char *buf;
-
 	string str = "产生的数据："+to_string(len)+" x "+to_string(n)+" , 耗时："+to_string(end_time - start_time)+"ms .";
-
-
 	static_TEXT.SetWindowTextA(str.c_str());
 }
 
@@ -421,8 +410,14 @@ void CMFCMyDialogDlg::OnNMClickList1(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 	// TODO: 在此添加控件通知处理程序代码
 
-	MessageBox("点击列表事件");
+	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 
+	int y = pNMListView->iSubItem;
+
+	int x = pNMListView->iItem;
+
+	if (x < len && y <= n && y>0 && x >= 0) 
+		MessageBox((to_string(x + 1) + "行，" + to_string(y) + "列：" + to_string(nums[y-1][x])).c_str(),"数据提示");
 
 	*pResult = 0;
 }
@@ -430,10 +425,37 @@ void CMFCMyDialogDlg::OnNMClickList1(NMHDR *pNMHDR, LRESULT *pResult)
 void CMFCMyDialogDlg::OnColumnClick(NMHDR *pNMHDR, LRESULT *pResult) {
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	int m_nSortCol;
-	bool m_fAsc = true;
-
 	m_nSortCol = pNMListView->iSubItem;
+	
+	if (m_nSortCol > n) {
+		MessageBox("选中项目没有数据，请重新选择！","错误提示");
+		return;
+	}
+	else if (m_nSortCol == 0) {
+		MessageBox("您选中的是编号栏，请重新选择！", "错误提示");
+		return;
+	}
 
-	MessageBox(("点击"+to_string(m_nSortCol)+"行").c_str());
+
+	MyDialog *dlg = new MyDialog;
+	//dlg.DoModal();
+
+	dlg->Create(IDD_DIALOG2, this);
+	dlg->ShowWindow(SW_SHOW);
+	CClientDC dcc(dlg->GetDlgItem(IDC_mys_STATIC));
+
+	int **tmp = new int*[1];
+	tmp[0] = nums[m_nSortCol-1];
+
+
+	int sx = 20;
+	int sy = 20;
+	int mid = 520;
+	int ey = 240;
+	Helper::drawCoordinate(dcc, sx, sy, sx, ey, mid);
+	Helper::drawLine(dcc, tmp, 1, len, sx, sy, mid, ey);
+
+	//int **tmp = new int*[1];
+	//tmp[0] = nums;
 
 }

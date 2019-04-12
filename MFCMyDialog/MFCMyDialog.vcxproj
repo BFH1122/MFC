@@ -185,8 +185,11 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Deatil_dialog.h" />
+    <ClInclude Include="Helper.h" />
     <ClInclude Include="MFCMyDialog.h" />
     <ClInclude Include="MFCMyDialogDlg.h" />
+    <ClInclude Include="MyDialog.h" />
     <ClInclude Include="MyListCtrl.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="Resource.h" />
@@ -194,8 +197,11 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Deatil_dialog.cpp" />
+    <ClCompile Include="HelperClass.cpp" />
     <ClCompile Include="MFCMyDialog.cpp" />
     <ClCompile Include="MFCMyDialogDlg.cpp" />
+    <ClCompile Include="MyDialog.cpp" />
     <ClCompile Include="MyListCtrl.cpp" />
     <ClCompile Include="RandomEntry.cpp" />
     <ClCompile Include="stdafx.cpp">

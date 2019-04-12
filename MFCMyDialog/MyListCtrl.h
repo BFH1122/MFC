@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 typedef struct
@@ -15,13 +15,15 @@ class CMyListCtrl : public CListCtrl
 	DECLARE_DYNAMIC(CMyListCtrl)
 
 public:
-	CMyListCtrl();
-	virtual ~CMyListCtrl();
+	CMyListCtrl::CMyListCtrl();
+	void CMyListCtrl::setListHeader(CMyListCtrl & mlist);
+	void CMyListCtrl::insertDatas(CMyListCtrl & mList, int **nums, int n, int len);
+	virtual CMyListCtrl::~CMyListCtrl();
 
 public:
-	void SetItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor);   //����ĳһ�е�ǰ��ɫ�ͱ���ɫ
-	void SetAllItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor);//����ȫ���е�ǰ��ɫ�ͱ���ɫ  
-	void ClearColor();                                                          //�����ɫӳ��� 
+	void SetItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor);   //ÉèÖÃÄ³Ò»ÐÐµÄÇ°¾°É«ºÍ±³¾°É«
+	void SetAllItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor);//ÉèÖÃÈ«²¿ÐÐµÄÇ°¾°É«ºÍ±³¾°É«  
+	void ClearColor();                                                          //Çå³ýÑÕÉ«Ó³Éä±í 
 	CMap<DWORD, DWORD&, TEXT_BK, TEXT_BK&> MapItemColor;
 protected:
 	void CMyListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult);
