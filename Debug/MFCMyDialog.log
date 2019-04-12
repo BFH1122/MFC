@@ -1,0 +1,11 @@
+﻿  MFCMyDialogDlg.cpp
+d:\vs\vc\atlmfc\include\afx.h(38): warning C4996: 'MBCS_Support_Deprecated_In_MFC': MBCS support in MFC is deprecated and may be removed in a future version of MFC.
+  d:\vs\vc\atlmfc\include\afx.h(33): note: 参见“MBCS_Support_Deprecated_In_MFC”的声明
+  HelperClass.cpp
+d:\vs\vc\atlmfc\include\afx.h(38): warning C4996: 'MBCS_Support_Deprecated_In_MFC': MBCS support in MFC is deprecated and may be removed in a future version of MFC.
+  d:\vs\vc\atlmfc\include\afx.h(33): note: 参见“MBCS_Support_Deprecated_In_MFC”的声明
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+d:\code\vs\mfcmydialog\mfcmydialog\helperclass.cpp(22): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+  正在生成代码...
+  MFCMyDialog.vcxproj -> D:\code\vs\MFCMyDialog\Debug\MFCMyDialog.exe
+  MFCMyDialog.vcxproj -> D:\code\vs\MFCMyDialog\Debug\MFCMyDialog.pdb (Partial PDB)
